@@ -38,7 +38,7 @@ class pid:
 
 
 # Function Updates the PID Parameters.
-def PID_update(lankash, setPoint, measurement):
+def update(system, setPoint, measurement):
     #
     # Calculating error signal
     #
@@ -46,40 +46,40 @@ def PID_update(lankash, setPoint, measurement):
     #
     # Calculating proportional term
     #
-    lankash.prop = lankash.kp * error
+    system.prop = system.kp * error
     #
     # Calculating Integral Term
     #
-    lankash.integ = lankash.integ + \
-        (0.5 * lankash.ki * lankash.T * (error + lankash.prevError))
+    system.integ = system.integ + \
+        (0.5 * system.ki * system.T * (error + system.prevError))
     #
     # Anti windUp + Clamp the Integrator
     #
-    if (lankash.integ > lankash.limMax_init):
-        lankash.integ = lankash.limMax_init
-    elif (lankash.integ < lankash.limMin_init):
-        lankash.integ = lankash.limMin_init
+    if (system.integ > system.limMax_init):
+        system.integ = system.limMax_init
+    elif (system.integ < system.limMin_init):
+        system.integ = system.limMin_init
     #
-    # Derivativ (Band Limit) + Low Pass Filter
+    # Derivative (Band Limit) + Low Pass Filter
     #
-    lankash.diff = ((2.0 * lankash.kd) * (measurement - lankash.prevMeasurement) +
-                    (2 * (lankash.taw - lankash.T) * lankash.diff)) / (2 * lankash.taw + lankash.T)
+    system.diff = ((2.0 * system.kd) * (measurement - system.prevMeasurement) +
+                   (2 * (system.taw - system.T) * system.diff)) / (2 * system.taw + system.T)
     #
     # Compare O/P and Apply clipping limits
     #
-    lankash.outPut = lankash.proportional + lankash.integ + lankash.diff
+    system.outPut = system.proportional + system.integ + system.diff
 
-    if (lankash.outPut > lankash.limMax):
-        lankash.outPut = lankash.limMax
-    elif (lankash.output < lankash.limMin):
-        lankash.outPut = lankash.limMin
+    if (system.outPut > system.limMax):
+        system.outPut = system.limMax
+    elif (system.output < system.limMin):
+        system.outPut = system.limMin
     #
     # Store the new values: Error & Measurements
     #
-    lankash.prevError = error
-    lankash.prevMeasurement = measurement
+    system.prevError = error
+    system.prevMeasurement = measurement
     #
     # Return PID O/P
     #
-    return lankash.outPut
+    return system.outPut
 # ...........................Function End........................#
