@@ -1,9 +1,3 @@
-##################################################
-# Code Created by "Lankash"
-#  @7/4/2022
-# File Contents: PID Application
-#
-
 
 import modules.pid as PID
 import modules.sens_read as sens_read
